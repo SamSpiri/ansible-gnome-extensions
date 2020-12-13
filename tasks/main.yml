@@ -16,7 +16,19 @@
   loop: "{{ gnome_extension_ids }}"
   register: r_gnome_extension_info
 
+- name: Check if there is new tool /usr/bin/gnome-extensions
+  stat:
+    path: /usr/bin/gnome-extensions
+  register: new_tool
+
 - include_tasks: install_extension.yml
   vars:
     gnome_extension_info: "{{ item.json }}"
   loop: "{{ r_gnome_extension_info.results }}"
+  when: not new_tool.stat.exists
+
+- include_tasks: install_extension_new.yml
+  vars:
+    gnome_extension_info: "{{ item.json }}"
+  loop: "{{ r_gnome_extension_info.results }}"
+  when: new_tool.stat.exists
