@@ -1,3 +1,0 @@
-[submodule "samba"]
-	path = samba
-	url = git@github.com:SamSpiri/ansible-role-samba.git
